@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
 import ToDo, {TaskType} from "./Components/ToDo";
-import {v1} from "uuid";
 
 export type FilteredType = "all" | "active" | "completed"
 
@@ -9,9 +8,9 @@ function App() {
 
     const toDoTitle: string = "What to learn"
     const [tasks, setTasks] = useState<Array<TaskType>>([
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS/TS", isDone: false},
-        {id: v1(), title: "React", isDone: true},
+        {id: 1, title: "HTML&CSS", isDone: true},
+        {id: 2, title: "JS/TS", isDone: false},
+        {id: 3, title: "React", isDone: true},
     ])
     const [filter, setFilter] = useState<FilteredType>("all")
     console.log(tasks)
@@ -21,27 +20,17 @@ function App() {
     }
 
     let filteredTasks = tasks
-    if (filter === "active") {
+    if (filter === "active"){
         filteredTasks = tasks.filter(t => !t.isDone)
     }
-    if (filter === "completed") {
+    if (filter === "completed"){
         filteredTasks = tasks.filter(t => t.isDone)
     }
 
 
-    const removeTask = (id: string) => {
+    const removeTask = (id: number) => {
         setTasks(tasks.filter(t => t.id !== id))
     }
-
-    const addTask = (value: string) => {
-        const newTask = {id: v1(), title: value, isDone: false}
-        setTasks([newTask, ...tasks])
-    }
-
-    const checkboxSwitcher = (id: string, isDone: boolean) => {
-        setTasks(tasks.map(t => t.id === id ? {...t, isDone} : t))
-    }
-
 
     return (
         <div className="App">
@@ -49,10 +38,7 @@ function App() {
                   tasks={filteredTasks}
                   removeTask={removeTask}
                   changeFilter={changeFilter}
-                  addTask={addTask}
-                  checkboxSwitcher={checkboxSwitcher}
-                  filter={filter}
-            />
+                />
         </div>
     );
 }

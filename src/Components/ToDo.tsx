@@ -11,10 +11,12 @@ type ToDoPropsType = {
     title: string
     tasks: Array<TaskType>
     filter: FilterType
-    removeTask: (id: string) => void
-    changeFilter: (value: FilterType) => void
-    addTask: (value: string) => void
-    isDoneChanger: (id: string, isDone: boolean) => void
+    todoListId: string
+    removeTask: (todoListID: string, id: string) => void
+    changeFilter: (todoListID: string, value: FilterType) => void
+    addTask: (todoListID: string, title: string) => void
+    isDoneChanger: (todoListID: string, id: string, isDone: boolean) => void
+    removeTodoList: (todoListID: string) => void
 
 }
 
@@ -28,7 +30,7 @@ function ToDo(props: ToDoPropsType) {
     }
     const onClickAddTask = () => {
         if (value.trim() !== '') {
-            props.addTask(value.trim())
+            props.addTask(props.todoListId, value.trim())
             setValue('')
         } else {
             setError("Title is required!")
@@ -37,17 +39,18 @@ function ToDo(props: ToDoPropsType) {
     const onKeyPressAddTask = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             if (value.trim() !== '') {
-                props.addTask(value.trim())
+                props.addTask(props.todoListId, value.trim())
                 setValue('')
             } else {
                 setError("Title is required!")
             }
         }
     }
+    const removeTodoList = () => props.removeTodoList(props.todoListId)
 
-    const onClickChangeFilterAll = () => props.changeFilter("all")
-    const onClickChangeFilterActive = () => props.changeFilter("active")
-    const onClickChangeFilterCompleted = () => props.changeFilter("completed")
+    const onClickChangeFilterAll = () => props.changeFilter(props.todoListId, "all")
+    const onClickChangeFilterActive = () => props.changeFilter(props.todoListId, "active")
+    const onClickChangeFilterCompleted = () => props.changeFilter(props.todoListId, "completed")
 
     const classNameForFilterAll = props.filter === "all" ? "active-filter" : ""
     const classNameForFilterActive = props.filter === "active" ? "active-filter" : ""
@@ -57,6 +60,7 @@ function ToDo(props: ToDoPropsType) {
         <div>
             <h3>
                 {props.title}
+                <button onClick={removeTodoList}>X</button>
             </h3>
             <div>
                 <input className={error ? "error" : ""}
@@ -67,9 +71,9 @@ function ToDo(props: ToDoPropsType) {
                 <div className={"error-message"}>{error}</div>
             </div>
             {props.tasks.map(t => {
-                const onClickRemoveTask = () => props.removeTask(t.id)
+                const onClickRemoveTask = () => props.removeTask(props.todoListId, t.id)
                 const onClickChangeChecked = (e: MouseEvent<HTMLInputElement>) => {
-                    props.isDoneChanger(t.id, e.currentTarget.checked)
+                    props.isDoneChanger(props.todoListId, t.id, e.currentTarget.checked)
                 }
 
                 return (

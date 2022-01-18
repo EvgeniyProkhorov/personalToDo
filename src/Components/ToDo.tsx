@@ -46,7 +46,7 @@ function ToDo(props: ToDoPropsType) {
     return (
         <div>
             <h3>
-                <EditableSpan title={props.title} callback={(title)=>changeTodoListTitle(title)}/>
+                <EditableSpan title={props.title} changeTitle={(title)=>changeTodoListTitle(title)}/>
                 <button onClick={removeTodoList}>X</button>
             </h3>
             <AddItem addItem={addTask}/>
@@ -59,7 +59,7 @@ function ToDo(props: ToDoPropsType) {
                 return (
                     <li key={t.id} className={t.isDone ? "is-done" : ""}>
                         <input type="checkbox" checked={t.isDone} onClick={onClickChangeChecked}/>
-                        <EditableSpan title={t.title} callback={(title) => changeTaskTitle(t.id, title)}/>
+                        <EditableSpan title={t.title} changeTitle={(title) => changeTaskTitle(t.id, title)}/>
                         <button onClick={onClickRemoveTask}>x</button>
                     </li>
                 )

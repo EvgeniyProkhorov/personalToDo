@@ -3,6 +3,8 @@ import './App.css';
 import ToDo, {TaskType} from "./Components/ToDo";
 import {v1} from "uuid";
 import {AddItem} from "./Components/InputForm";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import {Menu} from "@mui/icons-material";
 
 export type FilterType = "all" | "active" | "completed"
 
@@ -73,34 +75,61 @@ function App() {
 
     return (
         <div className="App">
-            <AddItem addItem={addTodoList}/>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{mr: 2}}
+                    >
+                        <Menu/>
+                    </IconButton>
+                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                        {'Todo List'}
+                    </Typography>
+                    <Button color="inherit">Login</Button>
+                </Toolbar>
+            </AppBar>
+            <div>
+                <Container fixed>
+                    <Grid container style={{padding: "20px"}}>
+                        <AddItem addItem={addTodoList}/>
+                    </Grid>
+                    <Grid container spacing={3}>
+                        {todoLists.map(tl => {
+                            let filteredTasks = tasks[tl.id]
+                            if (tl.filter === "active") {
+                                filteredTasks = tasks[tl.id].filter(t => !t.isDone)
+                            }
+                            if (tl.filter === "completed") {
+                                filteredTasks = tasks[tl.id].filter(t => t.isDone)
+                            }
 
-            {todoLists.map(tl => {
-                let filteredTasks = tasks[tl.id]
-                if (tl.filter === "active") {
-                    filteredTasks = tasks[tl.id].filter(t => !t.isDone)
-                }
-                if (tl.filter === "completed") {
-                    filteredTasks = tasks[tl.id].filter(t => t.isDone)
-                }
+                            return <Grid item>
+                                <Paper style={{padding: "10px"}}>
+                                    <ToDo key={tl.id}
+                                          todoListId={tl.id}
+                                          title={tl.title}
+                                          filter={tl.filter}
+                                          tasks={filteredTasks}
+                                          removeTask={removeTask}
+                                          changeFilter={changeFilter}
+                                          addTask={addTask}
+                                          changeTask={changeTask}
+                                          isDoneChanger={isDoneChanger}
+                                          removeTodoList={removeTodoList}
+                                          changeTitleTodoList={changeTitleTodoList}
 
-                return (
-                    <ToDo key={tl.id}
-                          todoListId={tl.id}
-                          title={tl.title}
-                          filter={tl.filter}
-                          tasks={filteredTasks}
-                          removeTask={removeTask}
-                          changeFilter={changeFilter}
-                          addTask={addTask}
-                          changeTask={changeTask}
-                          isDoneChanger={isDoneChanger}
-                          removeTodoList={removeTodoList}
-                          changeTitleTodoList={changeTitleTodoList}
-
-                    />
-                )
-            })}
+                                    />
+                                </Paper>
+                            </Grid>
+                        })}
+                    </Grid>
+                </Container>
+            </div>
+            {/*<AddItem addItem={addTodoList}/>*/}
         </div>
     );
 }

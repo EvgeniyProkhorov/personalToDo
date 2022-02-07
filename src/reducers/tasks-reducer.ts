@@ -1,31 +1,37 @@
 import {v1} from "uuid";
 import {TasksType} from "../App";
+import {addTodoListAC, removeTodoListAC, todoListId1, todoListId2} from "./todolist-reducer";
 
-type TasksActionType = ReturnType<typeof createTaskAC>
-    | ReturnType<typeof addTaskAC>
+type TasksActionType = ReturnType<typeof addTaskAC>
     | ReturnType<typeof removeTaskAC>
     | ReturnType<typeof changeTaskAC>
     | ReturnType<typeof isDoneChangerAC>
+    | ReturnType<typeof addTodoListAC>
+    | ReturnType<typeof removeTodoListAC>
 
-// const initState: InitTasksType = {
-//     [todoListId1]: [
-//         {id: v1(), title: "HTML&CSS", isDone: true},
-//         {id: v1(), title: "JS/TS", isDone: false},
-//         {id: v1(), title: "React", isDone: true},
-//         {id: v1(), title: "Angular", isDone: false},
-//     ],
-//     [todoListId2]: [
-//         {id: v1(), title: "Milk", isDone: true},
-//         {id: v1(), title: "Fruits", isDone: false},
-//         {id: v1(), title: "Bread", isDone: false},
-//         {id: v1(), title: "Coffee", isDone: true},
-//     ]
-// }
+const initState: TasksType = {
+    [todoListId1]: [
+        {id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "JS/TS", isDone: false},
+        {id: v1(), title: "React", isDone: true},
+        {id: v1(), title: "Angular", isDone: false},
+    ],
+    [todoListId2]: [
+        {id: v1(), title: "Milk", isDone: true},
+        {id: v1(), title: "Fruits", isDone: false},
+        {id: v1(), title: "Bread", isDone: false},
+        {id: v1(), title: "Coffee", isDone: true},
+    ]
+}
 
-export const tasksReducer = (state: TasksType, action: TasksActionType): TasksType => {
+export const tasksReducer = (state: TasksType = initState, action: TasksActionType): TasksType => {
     switch (action.type) {
-        case "CREATE-TASK":
-            return {...state, [action.payload]: []}
+        case "ADD-TODOLIST":
+            return {...state, [action.payload.id]: []}
+        case "REMOVE-TODOLIST":
+            const copyState = {...state, [action.payload]: [...state[action.payload]]}
+            delete copyState[action.payload]
+            return copyState
         case "ADD-TASK":
             let newTask = {id: v1(), title: action.payload.title, isDone: false}
             return {...state, [action.payload.todoListID]: [newTask, ...state[action.payload.todoListID]]}
@@ -43,19 +49,24 @@ export const tasksReducer = (state: TasksType, action: TasksActionType): TasksTy
                 } : s)
             }
         case "CHECKBOX-CHANGER":
-            return {...state,
-                [action.payload.todoListID]: state[action.payload.todoListID].map(s=> s.id === action.payload.taskID? {...s,isDone: action.payload.isDone}: s)}
+            return {
+                ...state,
+                [action.payload.todoListID]: state[action.payload.todoListID].map(s => s.id === action.payload.taskID ? {
+                    ...s,
+                    isDone: action.payload.isDone
+                } : s)
+            }
         default:
             return state
     }
 }
 
-export const createTaskAC = (ID: string) => {
-    return {
-        type: "CREATE-TASK",
-        payload: ID
-    } as const
-}
+// export const createTaskAC = (ID: string) => {
+//     return {
+//         type: "CREATE-TASK",
+//         payload: ID
+//     } as const
+// }
 export const addTaskAC = (todoListID: string, title: string) => {
     return {
         type: "ADD-TASK",

@@ -118,7 +118,6 @@ function App() {
                     </Grid>
                 </Container>
             </div>
-            {/*<AddItem addItem={addTodoList}/>*/}
         </div>
     );
 }

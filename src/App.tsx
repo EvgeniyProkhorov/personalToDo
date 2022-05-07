@@ -9,15 +9,15 @@ import {
     changeFilterAC,
     changeTitleTodoListAC,
     removeTodoListAC,
-} from "./reducers/todolist-reducer";
+} from "./Redux/reducers/todolist-reducer";
 import {
     addTaskAC,
     changeTaskAC,
     isDoneChangerAC,
     removeTaskAC,
-} from "./reducers/tasks-reducer";
+} from "./Redux/reducers/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "./Redux/store";
+import {AppRootState} from "./Redux/store/store";
 
 export type FilterType = "all" | "active" | "completed"
 

@@ -1,4 +1,4 @@
-import {FilterType, TodoListType} from "../App";
+import {FilterType, TodoListType} from "../../App";
 import {v1} from "uuid";
 
 type TodoActionType = ReturnType<typeof addTodoListAC>

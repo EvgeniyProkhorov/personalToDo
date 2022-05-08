@@ -31,9 +31,8 @@ export const tasksReducer = (state: TasksType = initState, action: TasksActionTy
             const copyState = {...state, [action.payload]: [...state[action.payload]]}
             delete copyState[action.payload]
             return copyState
-        // case "ADD-TASK":
-        //     let newTask = {id: v1(), title: action.payload.title, isDone: false}
-        //     return {...state, [action.payload.todoListID]: [newTask, ...state[action.payload.todoListID]]}
+        case "TASKS/ADD-TASK":
+            return {...state, [action.payload.todolistID]: [action.payload.item, ...state[action.payload.todolistID]]}
         case "TASKS/REMOVE-TASK":
             return {
                 ...state,
@@ -68,10 +67,13 @@ export const getTasksAC = (todolistID: string, tasks: TaskType[]) => {
     } as const
 }
 
-export const addTaskAC = (todoListID: string, title: string) => {
+export const addTaskAC = (todolistID: string, item: TaskType) => {
     return {
         type: "TASKS/ADD-TASK",
-        payload: {todoListID, title}
+        payload: {
+            todolistID,
+            item
+        }
     } as const
 }
 
@@ -99,4 +101,9 @@ export const isDoneChangerAC = (todoListID: string, taskID: string, taskStatus: 
 export const getTasksTK = (todolistId: string) => (dispatch: Dispatch) => {
     todoListApi.getTasks(todolistId)
         .then(res => dispatch(getTasksAC(todolistId, res.data.items)))
+}
+
+export const createTaskTK = (todolistId: string, title: string) => (dispatch: Dispatch) => {
+    todoListApi.createTask(todolistId, title)
+        .then(res => dispatch(addTaskAC(todolistId, res.data.data.item)))
 }

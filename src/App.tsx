@@ -12,7 +12,7 @@ import {
     removeTodoListAC,
     TodoGeneralType,
 } from "./Redux/reducers/todolist-reducer";
-import {addTaskAC, changeTaskAC, createTaskTK, isDoneChangerAC, removeTaskAC,} from "./Redux/reducers/tasks-reducer";
+import {changeTaskAC, createTaskTK, deleteTaskTK, isDoneChangerAC} from "./Redux/reducers/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./Redux/store/store";
 import {TaskStatuses, TaskType} from "./api/types";
@@ -42,7 +42,7 @@ function App() {
         dispatch(createTaskTK(todoListID, title))
     }
     const removeTask = (todoListID: string, taskID: string) => {
-        dispatch(removeTaskAC(todoListID, taskID))
+        dispatch(deleteTaskTK(todoListID, taskID))
     }
     const changeTask = (todoListID: string, taskID: string, title: string) => {
         dispatch(changeTaskAC(todoListID, taskID, title))

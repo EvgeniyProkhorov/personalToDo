@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
-import ToDo, {TaskType} from "./Components/ToDo";
+import TodoList from "./Components/TodoList";
 import {AddItem} from "./Components/InputForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
@@ -8,16 +8,14 @@ import {
     addTodoListAC,
     changeFilterAC,
     changeTitleTodoListAC,
+    getTodosThunk,
     removeTodoListAC,
+    TodoGeneralType,
 } from "./Redux/reducers/todolist-reducer";
-import {
-    addTaskAC,
-    changeTaskAC,
-    isDoneChangerAC,
-    removeTaskAC,
-} from "./Redux/reducers/tasks-reducer";
+import {addTaskAC, changeTaskAC, isDoneChangerAC, removeTaskAC,} from "./Redux/reducers/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./Redux/store/store";
+import {TaskStatuses, TaskType} from "./api/types";
 
 export type FilterType = "all" | "active" | "completed"
 
@@ -33,8 +31,12 @@ export type TasksType = {
 
 function App() {
     const dispatch = useDispatch()
-    const todoLists = useSelector<AppRootState, Array<TodoListType>>(state => state.todoLists)
+    const todoLists = useSelector<AppRootState, Array<TodoGeneralType>>(state => state.todoLists)
     const tasks = useSelector<AppRootState, TasksType>(state => state.tasks)
+
+    useEffect(() => {
+        dispatch(getTodosThunk)
+    }, [dispatch])
 
     const addTask = (todoListID: string, title: string) => {
         dispatch(addTaskAC(todoListID, title))
@@ -45,8 +47,8 @@ function App() {
     const changeTask = (todoListID: string, taskID: string, title: string) => {
         dispatch(changeTaskAC(todoListID, taskID, title))
     }
-    const isDoneChanger = (todoListID: string, taskID: string, isDone: boolean) => {
-        dispatch(isDoneChangerAC(todoListID, taskID, isDone))
+    const isDoneChanger = (todoListID: string, taskID: string, taskStatus: TaskStatuses) => {
+        dispatch(isDoneChangerAC(todoListID, taskID, taskStatus))
     }
 
     const addTodoList = (title: string) => {
@@ -90,26 +92,26 @@ function App() {
                         {todoLists.map(tl => {
                             let filteredTasks = tasks[tl.id]
                             if (tl.filter === "active") {
-                                filteredTasks = tasks[tl.id].filter(t => !t.isDone)
+                                filteredTasks = tasks[tl.id].filter(t => t.status !== TaskStatuses.New)
                             }
                             if (tl.filter === "completed") {
-                                filteredTasks = tasks[tl.id].filter(t => t.isDone)
+                                filteredTasks = tasks[tl.id].filter(t => t.status === TaskStatuses.Completed)
                             }
 
                             return <Grid item>
                                 <Paper style={{padding: "10px"}}>
-                                    <ToDo key={tl.id}
-                                          todoListId={tl.id}
-                                          title={tl.title}
-                                          filter={tl.filter}
-                                          tasks={filteredTasks}
-                                          removeTask={removeTask}
-                                          changeFilter={changeFilter}
-                                          addTask={addTask}
-                                          changeTask={changeTask}
-                                          isDoneChanger={isDoneChanger}
-                                          removeTodoList={removeTodoList}
-                                          changeTitleTodoList={changeTitleTodoList}
+                                    <TodoList key={tl.id}
+                                              todoListId={tl.id}
+                                              title={tl.title}
+                                              filter={tl.filter}
+                                              tasks={filteredTasks}
+                                              removeTask={removeTask}
+                                              changeFilter={changeFilter}
+                                              addTask={addTask}
+                                              changeTask={changeTask}
+                                              isDoneChanger={isDoneChanger}
+                                              removeTodoList={removeTodoList}
+                                              changeTitleTodoList={changeTitleTodoList}
 
                                     />
                                 </Paper>

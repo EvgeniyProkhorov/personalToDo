@@ -10,8 +10,6 @@ type TodoActionType = ReturnType<typeof addTodoListAC>
     | ReturnType<typeof changeFilterAC>
     | ReturnType<typeof getTodosAC>
 
-export const todoListId1 = v1()
-export const todoListId2 = v1()
 
 export type TodoGeneralType = TodolistType & { filter: FilterType }
 
@@ -22,13 +20,7 @@ export const todoListReducer = (state: Array<TodoGeneralType> = initState, actio
         case "TODOLIST/GET-TODOS":
             return action.payload.map(t => ({...t, filter: "all"}))
         case "TODOLIST/ADD-TODOLIST":
-            return [{
-                id: action.payload.id,
-                title: action.payload.title,
-                filter: "all",
-                addedDate: new Date().toString(),
-                order: Math.random()
-            }, ...state]
+            return [{...action.payload, filter: "all"}, ...state]
         case "TODOLIST/REMOVE-TODOLIST":
             return state.filter(s => s.id !== action.payload)
         case "TODOLIST/CHANGE-TITLE-TODOLIST":
@@ -47,10 +39,10 @@ export const getTodosAC = (todoLists: TodolistType[]) => {
     } as const
 }
 
-export const addTodoListAC = (title: string) => {
+export const addTodoListAC = (todolist: TodolistType) => {
     return {
         type: "TODOLIST/ADD-TODOLIST",
-        payload: {title, id: v1()}
+        payload: todolist
     } as const
 }
 
@@ -77,9 +69,17 @@ export const changeFilterAC = (todoListID: string, filter: FilterType) => {
     } as const
 }
 
-export const getTodosThunk = (dispatch: Dispatch) => {
-    todoListApi.getTodos()
-        .then(res => {
-            dispatch(getTodosAC(res.data))
-        })
+export const getTodosThunk = async (dispatch: Dispatch) => {
+    const response = await todoListApi.getTodos()
+    dispatch(getTodosAC(response.data))
+}
+
+export const createTodoTK = (title: string) => async (dispatch: Dispatch) => {
+    const response = await todoListApi.createTodolist(title)
+    dispatch(addTodoListAC(response.data.data.item))
+}
+
+export const deleteTodoTK = (todoListID: string) => async (dispatch: Dispatch) => {
+    await todoListApi.deleteTodolist(todoListID)
+    dispatch(removeTodoListAC(todoListID))
 }

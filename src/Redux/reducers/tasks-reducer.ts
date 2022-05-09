@@ -98,17 +98,17 @@ export const isDoneChangerAC = (todoListID: string, taskID: string, taskStatus: 
     } as const
 }
 
-export const getTasksTK = (todolistId: string) => (dispatch: Dispatch) => {
-    todoListApi.getTasks(todolistId)
-        .then(res => dispatch(getTasksAC(todolistId, res.data.items)))
+export const getTasksTK = (todolistId: string) => async (dispatch: Dispatch) => {
+    const res = await todoListApi.getTasks(todolistId)
+    dispatch(getTasksAC(todolistId, res.data.items))
 }
 
-export const createTaskTK = (todolistId: string, title: string) => (dispatch: Dispatch) => {
-    todoListApi.createTask(todolistId, title)
-        .then(res => dispatch(addTaskAC(todolistId, res.data.data.item)))
+export const createTaskTK = (todolistId: string, title: string) => async (dispatch: Dispatch) => {
+    const res = await todoListApi.createTask(todolistId, title)
+    dispatch(addTaskAC(todolistId, res.data.data.item))
 }
 
-export const deleteTaskTK = (todoListID: string, taskID: string) => (dispatch: Dispatch) => {
-    todoListApi.deleteTask(todoListID, taskID)
-        .then(() => dispatch(removeTaskAC(todoListID, taskID)))
+export const deleteTaskTK = (todoListID: string, taskID: string) => async (dispatch: Dispatch) => {
+    await todoListApi.deleteTask(todoListID, taskID)
+    dispatch(removeTaskAC(todoListID, taskID))
 }

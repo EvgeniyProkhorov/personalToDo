@@ -7,7 +7,7 @@ import {Menu} from "@mui/icons-material";
 import {
     addTodoListAC,
     changeFilterAC,
-    changeTitleTodoListAC,
+    changeTitleTodoListAC, createTodoTK, deleteTodoTK,
     getTodosThunk,
     removeTodoListAC,
     TodoGeneralType,
@@ -52,10 +52,10 @@ function App() {
     }
 
     const addTodoList = (title: string) => {
-        dispatch(addTodoListAC(title))
+        dispatch(createTodoTK(title))
     }
     const removeTodoList = (todoListID: string) => {
-        dispatch(removeTodoListAC(todoListID))
+        dispatch(deleteTodoTK(todoListID))
     }
     const changeTitleTodoList = (todoListID: string, title: string) => {
         dispatch(changeTitleTodoListAC(todoListID, title))

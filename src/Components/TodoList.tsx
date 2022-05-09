@@ -9,29 +9,23 @@ import {getTasksTC} from "../Redux/reducers/tasks-reducer";
 import {TaskStatuses, TaskType} from "../api/types";
 import {Task} from "./Task";
 
-// export type TaskType = {
-//     id: string
-//     title: string
-//     isDone: boolean
-// }
 
 type ToDoPropsType = {
     title: string
     tasks: Array<TaskType>
     filter: FilterType
     todoListId: string
-    removeTask: (todoListID: string, id: string) => void
+    removeTask: (todoListID: string, taskID: string) => void
     changeFilter: (todoListID: string, value: FilterType) => void
     addTask: (todoListID: string, title: string) => void
-    changeTask: (todoListID: string, id: string, title: string) => void
-    isDoneChanger: (todoListID: string, id: string, taskStatus: TaskStatuses) => void
+    changeTaskTitle: (todoListID: string, task: TaskType, title: string) => void
+    isDoneChanger: (todoListID: string, task: TaskType, taskStatus: TaskStatuses) => void
     removeTodoList: (todoListID: string) => void
     changeTitleTodoList: (todoListID: string, title: string) => void
 
 }
 
 function TodoList(props: ToDoPropsType) {
-
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -46,8 +40,8 @@ function TodoList(props: ToDoPropsType) {
     const addTask = (title: string) => {
         props.addTask(props.todoListId, title)
     }
-    const changeTaskTitle = (taskID: string, title: string) => {
-        props.changeTask(props.todoListId, taskID, title)
+    const changeTaskTitle = (task: TaskType, title: string) => {
+        props.changeTaskTitle(props.todoListId, task, title)
     }
     const changeTodoListTitle = (title: string) => {
         props.changeTitleTodoList(props.todoListId, title)
@@ -68,17 +62,15 @@ function TodoList(props: ToDoPropsType) {
                     onClick={removeTodoList}><Delete/></IconButton>
             </h3>
             <AddItem addItem={addTask}/>
-            {props.tasks.map(t => {
-                const onClickRemoveTask = () => props.removeTask(props.todoListId, t.id)
+            {props.tasks.map(task => {
+                const onClickRemoveTask = () => props.removeTask(props.todoListId, task.id)
                 const onClickChangeStatus = (e: ChangeEvent<HTMLInputElement>) => {
-                    props.isDoneChanger(props.todoListId, t.id, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New)
+                    props.isDoneChanger(props.todoListId, task, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New)
                 }
 
                 return (
-                    <Task key={t.id}
-                          taskTitle={t.title}
-                          taskID={t.id}
-                          taskStatus={t.status}
+                    <Task key={task.id}
+                          task={task}
                           onClickChangeStatus={onClickChangeStatus}
                           onClickRemoveTask={onClickRemoveTask}
                           changeTaskTitle={changeTaskTitle}

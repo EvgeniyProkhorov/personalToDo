@@ -1,5 +1,4 @@
 import {FilterType} from "../../App";
-import {v1} from "uuid";
 import {TodolistType} from "../../api/types";
 import {Dispatch} from "redux";
 import {todoListApi} from "../../api/todolist-api";
@@ -69,7 +68,7 @@ export const changeFilterAC = (todoListID: string, filter: FilterType) => {
     } as const
 }
 
-export const getTodosThunk = async (dispatch: Dispatch) => {
+export const getTodosTC = () => async (dispatch: Dispatch) => {
     const response = await todoListApi.getTodos()
     dispatch(getTodosAC(response.data))
 }

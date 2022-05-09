@@ -5,12 +5,17 @@ import {AddItem} from "./Components/InputForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import {
-    changeFilterAC,
-    changeTitleTodoListAC, createTodoTC, deleteTodoTC,
-    getTodosThunk,
+    changeFilterAC, createTodoTC, deleteTodoTC, getTodosTC,
     TodoGeneralType, updateTodoTitleTC,
 } from "./Redux/reducers/todolist-reducer";
-import {changeTaskAC, createTaskTC, deleteTaskTC, isDoneChangerAC} from "./Redux/reducers/tasks-reducer";
+import {
+    changeTaskAC,
+    createTaskTC,
+    deleteTaskTC,
+    isDoneChangerAC,
+    updateTaskAC,
+    updateTaskTC
+} from "./Redux/reducers/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./Redux/store/store";
 import {TaskStatuses, TaskType} from "./api/types";
@@ -33,7 +38,7 @@ function App() {
     const tasks = useSelector<AppRootState, TasksType>(state => state.tasks)
 
     useEffect(() => {
-        dispatch(getTodosThunk)
+        dispatch(getTodosTC())
     }, [dispatch])
 
     const addTask = (todoListID: string, title: string) => {
@@ -42,11 +47,11 @@ function App() {
     const removeTask = (todoListID: string, taskID: string) => {
         dispatch(deleteTaskTC(todoListID, taskID))
     }
-    const changeTask = (todoListID: string, taskID: string, title: string) => {
-        dispatch(changeTaskAC(todoListID, taskID, title))
+    const changeTaskTitle = (todoListID: string, task: TaskType, title: string) => {
+        dispatch(updateTaskTC(todoListID, task, {title}))
     }
-    const isDoneChanger = (todoListID: string, taskID: string, taskStatus: TaskStatuses) => {
-        dispatch(isDoneChangerAC(todoListID, taskID, taskStatus))
+    const isDoneChanger = (todoListID: string, task: TaskType, status: TaskStatuses) => {
+        dispatch(updateTaskTC(todoListID, task, {status}))
     }
 
     const addTodoList = (title: string) => {
@@ -106,7 +111,7 @@ function App() {
                                               removeTask={removeTask}
                                               changeFilter={changeFilter}
                                               addTask={addTask}
-                                              changeTask={changeTask}
+                                              changeTaskTitle={changeTaskTitle}
                                               isDoneChanger={isDoneChanger}
                                               removeTodoList={removeTodoList}
                                               changeTitleTodoList={changeTitleTodoList}

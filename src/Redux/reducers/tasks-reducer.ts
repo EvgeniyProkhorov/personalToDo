@@ -47,14 +47,14 @@ export const tasksReducer = (state: TasksType = initState, action: TasksActionTy
         //             title: action.payload.title
         //         } : s)
         //     }
-        case "TASKS/CHECKBOX-CHANGER":
-            return {
-                ...state,
-                [action.payload.todoListID]: state[action.payload.todoListID].map(s => s.id === action.payload.taskID ? {
-                    ...s,
-                    isDone: action.payload.taskStatus
-                } : s)
-            }
+        // case "TASKS/CHECKBOX-CHANGER":
+        //     return {
+        //         ...state,
+        //         [action.payload.todoListID]: state[action.payload.todoListID].map(s => s.id === action.payload.taskID ? {
+        //             ...s,
+        //             isDone: action.payload.taskStatus
+        //         } : s)
+        //     }
         case "TASKS/UPDATE-TASK":
             return {
                 ...state, [action.payload.todoListID]: state[action.payload.todoListID]

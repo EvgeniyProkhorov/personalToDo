@@ -98,17 +98,17 @@ export const isDoneChangerAC = (todoListID: string, taskID: string, taskStatus: 
     } as const
 }
 
-export const getTasksTK = (todolistId: string) => async (dispatch: Dispatch) => {
-    const res = await todoListApi.getTasks(todolistId)
-    dispatch(getTasksAC(todolistId, res.data.items))
+export const getTasksTC = (todolistId: string) => async (dispatch: Dispatch) => {
+    const response = await todoListApi.getTasks(todolistId)
+    dispatch(getTasksAC(todolistId, response.data.items))
 }
 
-export const createTaskTK = (todolistId: string, title: string) => async (dispatch: Dispatch) => {
-    const res = await todoListApi.createTask(todolistId, title)
-    dispatch(addTaskAC(todolistId, res.data.data.item))
+export const createTaskTC = (todolistId: string, title: string) => async (dispatch: Dispatch) => {
+    const response = await todoListApi.createTask(todolistId, title)
+    dispatch(addTaskAC(todolistId, response.data.data.item))
 }
 
-export const deleteTaskTK = (todoListID: string, taskID: string) => async (dispatch: Dispatch) => {
+export const deleteTaskTC = (todoListID: string, taskID: string) => async (dispatch: Dispatch) => {
     await todoListApi.deleteTask(todoListID, taskID)
     dispatch(removeTaskAC(todoListID, taskID))
 }

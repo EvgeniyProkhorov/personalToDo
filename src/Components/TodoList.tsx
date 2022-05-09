@@ -5,7 +5,7 @@ import {EditableSpan} from "./EditableSpan";
 import {Delete} from "@mui/icons-material";
 import {Button, IconButton} from "@mui/material";
 import {useDispatch} from "react-redux";
-import {getTasksTK} from "../Redux/reducers/tasks-reducer";
+import {getTasksTC} from "../Redux/reducers/tasks-reducer";
 import {TaskStatuses, TaskType} from "../api/types";
 import {Task} from "./Task";
 
@@ -35,7 +35,7 @@ function TodoList(props: ToDoPropsType) {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(getTasksTK(props.todoListId))
+        dispatch(getTasksTC(props.todoListId))
     }, [dispatch, props.todoListId])
 
     const removeTodoList = () => props.removeTodoList(props.todoListId)

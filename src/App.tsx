@@ -5,14 +5,12 @@ import {AddItem} from "./Components/InputForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import {
-    addTodoListAC,
     changeFilterAC,
-    changeTitleTodoListAC, createTodoTK, deleteTodoTK,
+    changeTitleTodoListAC, createTodoTC, deleteTodoTC,
     getTodosThunk,
-    removeTodoListAC,
-    TodoGeneralType,
+    TodoGeneralType, updateTodoTitleTC,
 } from "./Redux/reducers/todolist-reducer";
-import {changeTaskAC, createTaskTK, deleteTaskTK, isDoneChangerAC} from "./Redux/reducers/tasks-reducer";
+import {changeTaskAC, createTaskTC, deleteTaskTC, isDoneChangerAC} from "./Redux/reducers/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./Redux/store/store";
 import {TaskStatuses, TaskType} from "./api/types";
@@ -39,10 +37,10 @@ function App() {
     }, [dispatch])
 
     const addTask = (todoListID: string, title: string) => {
-        dispatch(createTaskTK(todoListID, title))
+        dispatch(createTaskTC(todoListID, title))
     }
     const removeTask = (todoListID: string, taskID: string) => {
-        dispatch(deleteTaskTK(todoListID, taskID))
+        dispatch(deleteTaskTC(todoListID, taskID))
     }
     const changeTask = (todoListID: string, taskID: string, title: string) => {
         dispatch(changeTaskAC(todoListID, taskID, title))
@@ -52,13 +50,13 @@ function App() {
     }
 
     const addTodoList = (title: string) => {
-        dispatch(createTodoTK(title))
+        dispatch(createTodoTC(title))
     }
     const removeTodoList = (todoListID: string) => {
-        dispatch(deleteTodoTK(todoListID))
+        dispatch(deleteTodoTC(todoListID))
     }
     const changeTitleTodoList = (todoListID: string, title: string) => {
-        dispatch(changeTitleTodoListAC(todoListID, title))
+        dispatch(updateTodoTitleTC(todoListID, title))
     }
     const changeFilter = (todoListID: string, filter: FilterType) => {
         dispatch(changeFilterAC(todoListID, filter))

@@ -74,12 +74,17 @@ export const getTodosThunk = async (dispatch: Dispatch) => {
     dispatch(getTodosAC(response.data))
 }
 
-export const createTodoTK = (title: string) => async (dispatch: Dispatch) => {
+export const createTodoTC = (title: string) => async (dispatch: Dispatch) => {
     const response = await todoListApi.createTodolist(title)
     dispatch(addTodoListAC(response.data.data.item))
 }
 
-export const deleteTodoTK = (todoListID: string) => async (dispatch: Dispatch) => {
+export const deleteTodoTC = (todoListID: string) => async (dispatch: Dispatch) => {
     await todoListApi.deleteTodolist(todoListID)
     dispatch(removeTodoListAC(todoListID))
+}
+
+export const updateTodoTitleTC = (todolistID: string, title: string) => async (dispatch: Dispatch) => {
+    await todoListApi.updateTodolist(todolistID, title)
+    dispatch(changeTitleTodoListAC(todolistID, title))
 }

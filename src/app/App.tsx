@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import TodoList from "./Components/TodoList";
-import {AddItem} from "./Components/InputForm";
+import TodoList from "../Components/TodoList";
+import {AddItem} from "../Components/InputForm";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -15,15 +15,15 @@ import Menu from "@mui/icons-material/Menu";
 import {
     changeFilterAC, createTodoTC, deleteTodoTC, getTodosTC,
     TodoGeneralType, updateTodoTitleTC,
-} from "./Redux/reducers/todolist-reducer";
+} from "../Redux/reducers/todolist-reducer";
 import {
     createTaskTC,
     deleteTaskTC,
     updateTaskTC
-} from "./Redux/reducers/tasks-reducer";
+} from "../Redux/reducers/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "./Redux/store/store";
-import {TaskStatuses, TaskType} from "./api/types";
+import {AppRootState} from "../Redux/store/store";
+import {TaskStatuses, TaskType} from "../api/types";
 
 export type FilterType = "all" | "active" | "completed"
 

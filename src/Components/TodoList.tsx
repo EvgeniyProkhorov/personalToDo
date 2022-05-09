@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useEffect} from "react";
-import {FilterType} from "../App";
+import {FilterType} from "../app/App";
 import {AddItem} from "./InputForm";
 import {EditableSpan} from "./EditableSpan";
 import Delete from "@mui/icons-material/Delete";

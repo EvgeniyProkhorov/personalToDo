@@ -1,4 +1,4 @@
-import {FilterType} from "../../App";
+import {FilterType} from "../../app/App";
 import {TodolistType} from "../../api/types";
 import {Dispatch} from "redux";
 import {todoListApi} from "../../api/todolist-api";

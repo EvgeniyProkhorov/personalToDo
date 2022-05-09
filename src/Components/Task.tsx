@@ -1,5 +1,6 @@
 import React, {ChangeEvent} from "react";
-import {Button, Checkbox} from "@mui/material";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
 import {TaskStatuses, TaskType} from "../api/types";
 import {EditableSpan} from "./EditableSpan";
 

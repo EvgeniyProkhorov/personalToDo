@@ -21,9 +21,10 @@ import {
     deleteTaskTC,
     updateTaskTC
 } from "../Redux/reducers/tasks-reducer";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "../Redux/store/store";
+import {useDispatch} from "react-redux";
+import {useAppSelector} from "../Redux/store/store";
 import {TaskStatuses, TaskType} from "../api/types";
+import {RequestStatusType} from "../Redux/reducers/app-reducer";
 
 export type FilterType = "all" | "active" | "completed"
 
@@ -39,8 +40,9 @@ export type TasksType = {
 
 function App() {
     const dispatch = useDispatch()
-    const todoLists = useSelector<AppRootState, Array<TodoGeneralType>>(state => state.todoLists)
-    const tasks = useSelector<AppRootState, TasksType>(state => state.tasks)
+    const todoLists = useAppSelector<Array<TodoGeneralType>>(state => state.todoLists)
+    const tasks = useAppSelector<TasksType>(state => state.tasks)
+    const status = useAppSelector<RequestStatusType>(state => state.app.status)
 
     useEffect(() => {
         dispatch(getTodosTC())
@@ -91,7 +93,7 @@ function App() {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
-            <LinearProgress color={'secondary'}/>
+            {status === 'loading' && <LinearProgress color={'secondary'}/>}
             <Container fixed>
                 <Grid container style={{padding: "20px"}}>
                     <AddItem addItem={addTodoList}/>

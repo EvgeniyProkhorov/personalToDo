@@ -2,6 +2,7 @@ import {FilterType} from "../../app/App";
 import {TodolistType} from "../../api/types";
 import {Dispatch} from "redux";
 import {todoListApi} from "../../api/todolist-api";
+import {setStatusAC} from "../reducers/app-reducer";
 
 type TodoActionType = ReturnType<typeof addTodoListAC>
     | ReturnType<typeof removeTodoListAC>
@@ -69,8 +70,11 @@ export const changeFilterAC = (todoListID: string, filter: FilterType) => {
 }
 
 export const getTodosTC = () => async (dispatch: Dispatch) => {
+    dispatch(setStatusAC("loading"))
     const response = await todoListApi.getTodos()
     dispatch(getTodosAC(response.data))
+    dispatch(setStatusAC("succeeded"))
+
 }
 
 export const createTodoTC = (title: string) => async (dispatch: Dispatch) => {

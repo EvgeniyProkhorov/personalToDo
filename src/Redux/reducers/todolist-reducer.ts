@@ -9,6 +9,7 @@ type TodoActionType = ReturnType<typeof addTodoListAC>
     | ReturnType<typeof changeTitleTodoListAC>
     | ReturnType<typeof changeFilterAC>
     | ReturnType<typeof getTodosAC>
+    | ReturnType<typeof setStatusAC>
 
 
 export type TodoGeneralType = TodolistType & { filter: FilterType }
@@ -69,7 +70,7 @@ export const changeFilterAC = (todoListID: string, filter: FilterType) => {
     } as const
 }
 
-export const getTodosTC = () => async (dispatch: Dispatch) => {
+export const getTodosTC = () => async (dispatch: Dispatch<TodoActionType>) => {
     dispatch(setStatusAC("loading"))
     const response = await todoListApi.getTodos()
     dispatch(getTodosAC(response.data))
@@ -77,17 +78,17 @@ export const getTodosTC = () => async (dispatch: Dispatch) => {
 
 }
 
-export const createTodoTC = (title: string) => async (dispatch: Dispatch) => {
+export const createTodoTC = (title: string) => async (dispatch: Dispatch<TodoActionType>) => {
     const response = await todoListApi.createTodolist(title)
     dispatch(addTodoListAC(response.data.data.item))
 }
 
-export const deleteTodoTC = (todoListID: string) => async (dispatch: Dispatch) => {
+export const deleteTodoTC = (todoListID: string) => async (dispatch: Dispatch<TodoActionType>) => {
     await todoListApi.deleteTodolist(todoListID)
     dispatch(removeTodoListAC(todoListID))
 }
 
-export const updateTodoTitleTC = (todolistID: string, title: string) => async (dispatch: Dispatch) => {
+export const updateTodoTitleTC = (todolistID: string, title: string) => async (dispatch: Dispatch<TodoActionType>) => {
     await todoListApi.updateTodolist(todolistID, title)
     dispatch(changeTitleTodoListAC(todolistID, title))
 }

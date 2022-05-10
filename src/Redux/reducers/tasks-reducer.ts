@@ -3,6 +3,7 @@ import {TasksType} from "../../app/App";
 import {TaskStatuses, TaskType, UpdateDomainTaskModelType, UpdateTaskModelType} from "../../api/types";
 import {Dispatch} from "redux";
 import {todoListApi} from "../../api/todolist-api";
+import {setStatusAC} from "./app-reducer";
 
 type TasksActionType = ReturnType<typeof addTaskAC>
     | ReturnType<typeof removeTaskAC>
@@ -13,6 +14,7 @@ type TasksActionType = ReturnType<typeof addTaskAC>
     | ReturnType<typeof getTodosAC>
     | ReturnType<typeof setTasksAC>
     | ReturnType<typeof updateTaskAC>
+    | ReturnType<typeof setStatusAC>
 
 const initState: TasksType = {}
 
@@ -111,22 +113,26 @@ export const updateTaskAC = (todoListID: string, taskID: string, task: TaskType)
     } as const
 }
 
-export const getTasksTC = (todolistId: string) => async (dispatch: Dispatch) => {
+export const getTasksTC = (todolistId: string) => async (dispatch: Dispatch<TasksActionType>) => {
     const response = await todoListApi.getTasks(todolistId)
     dispatch(setTasksAC(todolistId, response.data.items))
 }
 
-export const createTaskTC = (todolistId: string, title: string) => async (dispatch: Dispatch) => {
+export const createTaskTC = (todolistId: string, title: string) => async (dispatch: Dispatch<TasksActionType>) => {
+    dispatch(setStatusAC("loading"))
     const response = await todoListApi.createTask(todolistId, title)
     dispatch(addTaskAC(todolistId, response.data.data.item))
+    dispatch(setStatusAC("succeeded"))
 }
 
-export const deleteTaskTC = (todoListID: string, taskID: string) => async (dispatch: Dispatch) => {
+export const deleteTaskTC = (todoListID: string, taskID: string) => async (dispatch: Dispatch<TasksActionType>) => {
+    dispatch(setStatusAC("loading"))
     await todoListApi.deleteTask(todoListID, taskID)
     dispatch(removeTaskAC(todoListID, taskID))
+    dispatch(setStatusAC("succeeded"))
 }
 
-export const updateTaskTC = (todoListID: string, task: TaskType, updateModel: UpdateDomainTaskModelType) => async (dispatch: Dispatch) => {
+export const updateTaskTC = (todoListID: string, task: TaskType, updateModel: UpdateDomainTaskModelType) => async (dispatch: Dispatch<TasksActionType>) => {
     const apiModel: UpdateTaskModelType = {
         title: task.title,
         startDate: task.startDate,
@@ -136,6 +142,8 @@ export const updateTaskTC = (todoListID: string, task: TaskType, updateModel: Up
         status: task.status,
         ...updateModel
     }
+    dispatch(setStatusAC("loading"))
     const response = await todoListApi.updateTask(todoListID, task.id, apiModel)
     dispatch(updateTaskAC(todoListID, task.id, response.data.data.item))
+    dispatch(setStatusAC("succeeded"))
 }

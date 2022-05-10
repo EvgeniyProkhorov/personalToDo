@@ -2,7 +2,7 @@ import {FilterType} from "../../app/App";
 import {TodolistType} from "../../api/types";
 import {Dispatch} from "redux";
 import {todoListApi} from "../../api/todolist-api";
-import {setStatusAC} from "./app-reducer";
+import {setErrorAC, setStatusAC} from "./app-reducer";
 
 type TodoActionType = ReturnType<typeof addTodoListAC>
     | ReturnType<typeof removeTodoListAC>
@@ -10,6 +10,7 @@ type TodoActionType = ReturnType<typeof addTodoListAC>
     | ReturnType<typeof changeFilterAC>
     | ReturnType<typeof getTodosAC>
     | ReturnType<typeof setStatusAC>
+    | ReturnType<typeof setErrorAC>
 
 
 export type TodoGeneralType = TodolistType & { filter: FilterType }
@@ -80,9 +81,18 @@ export const getTodosTC = () => async (dispatch: Dispatch<TodoActionType>) => {
 
 export const createTodoTC = (title: string) => async (dispatch: Dispatch<TodoActionType>) => {
     dispatch(setStatusAC("loading"))
-    const response = await todoListApi.createTodolist(title)
-    dispatch(addTodoListAC(response.data.data.item))
-    dispatch(setStatusAC("succeeded"))
+    try {
+        const response = await todoListApi.createTodolist(title)
+        if (response.data.resultCode === 0) {
+            dispatch(addTodoListAC(response.data.data.item))
+            dispatch(setStatusAC("succeeded"))
+        } else {
+            dispatch(setErrorAC(response.data.messages.length ? response.data.messages[0] : 'Some Error occurred'))
+            dispatch(setStatusAC("failed"))
+        }
+    } catch {
+        dispatch(setStatusAC("failed"))
+    }
 }
 
 export const deleteTodoTC = (todoListID: string) => async (dispatch: Dispatch<TodoActionType>) => {

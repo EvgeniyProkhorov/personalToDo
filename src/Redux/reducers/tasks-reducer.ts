@@ -114,8 +114,10 @@ export const updateTaskAC = (todoListID: string, taskID: string, task: TaskType)
 }
 
 export const getTasksTC = (todolistId: string) => async (dispatch: Dispatch<TasksActionType>) => {
+    dispatch(setStatusAC("loading"))
     const response = await todoListApi.getTasks(todolistId)
     dispatch(setTasksAC(todolistId, response.data.items))
+    dispatch(setStatusAC("succeeded"))
 }
 
 export const createTaskTC = (todolistId: string, title: string) => async (dispatch: Dispatch<TasksActionType>) => {

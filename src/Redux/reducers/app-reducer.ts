@@ -1,7 +1,10 @@
+import {Nullable} from "../../Components/types";
+
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 const initialState = {
-    status: 'idle' as RequestStatusType
+    status: 'idle' as RequestStatusType,
+    error: 'error' as Nullable<string>
 }
 
 type InitialStateType = typeof initialState

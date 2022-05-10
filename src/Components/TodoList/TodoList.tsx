@@ -1,14 +1,14 @@
 import React, {ChangeEvent, useEffect} from "react";
-import {FilterType} from "../app/App";
-import {AddItem} from "./InputForm";
-import {EditableSpan} from "./EditableSpan";
+import {FilterType} from "../../app/App";
+import {AddItem} from "../InputForm/InputForm";
+import {EditableSpan} from "../EditableSpan/EditableSpan";
 import Delete from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import {useDispatch} from "react-redux";
-import {getTasksTC} from "../Redux/reducers/tasks-reducer";
-import {TaskStatuses, TaskType} from "../api/types";
-import {Task} from "./Task";
+import {getTasksTC} from "../../Redux/reducers/tasks-reducer";
+import {TaskStatuses, TaskType} from "../../api/types";
+import {Task} from "../Task/Task";
 
 
 type ToDoPropsType = {

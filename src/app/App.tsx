@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import TodoList from "../Components/TodoList";
-import {AddItem} from "../Components/InputForm";
+import TodoList from "../Components/TodoList/TodoList";
+import {AddItem} from "../Components/InputForm/InputForm";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -25,6 +25,7 @@ import {useDispatch} from "react-redux";
 import {useAppSelector} from "../Redux/store/store";
 import {TaskStatuses, TaskType} from "../api/types";
 import {RequestStatusType} from "../Redux/reducers/app-reducer";
+import {ErrorSnackbar} from "../Components/ErrorSnackbar/ErrorSnackbar";
 
 export type FilterType = "all" | "active" | "completed"
 
@@ -124,6 +125,7 @@ function App() {
                                           changeTitleTodoList={changeTitleTodoList}
                                 />
                             </Paper>
+                            <ErrorSnackbar/>
                         </Grid>
                     })}
                 </Grid>

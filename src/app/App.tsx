@@ -26,6 +26,7 @@ import {useAppSelector} from "../Redux/store/store";
 import {TaskStatuses, TaskType} from "../api/types";
 import {RequestStatusType} from "../Redux/reducers/app-reducer";
 import {ErrorSnackbar} from "../Components/ErrorSnackbar/ErrorSnackbar";
+import {NullableType} from "../Components/types";
 
 export type FilterType = "all" | "active" | "completed"
 
@@ -44,6 +45,7 @@ function App() {
     const todoLists = useAppSelector<Array<TodoGeneralType>>(state => state.todoLists)
     const tasks = useAppSelector<TasksType>(state => state.tasks)
     const status = useAppSelector<RequestStatusType>(state => state.app.status)
+    const error = useAppSelector<NullableType<string>>(state => state.app.error)
 
     useEffect(() => {
         dispatch(getTodosTC())
@@ -125,7 +127,7 @@ function App() {
                                           changeTitleTodoList={changeTitleTodoList}
                                 />
                             </Paper>
-                            <ErrorSnackbar/>
+                            {error === 'error' && <ErrorSnackbar/>}
                         </Grid>
                     })}
                 </Grid>

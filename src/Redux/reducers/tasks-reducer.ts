@@ -3,8 +3,9 @@ import {TasksType} from "../../app/App";
 import {TaskStatuses, TaskType, UpdateDomainTaskModelType, UpdateTaskModelType} from "../../api/types";
 import {Dispatch} from "redux";
 import {todoListApi} from "../../api/todolist-api";
-import {setErrorAC, setStatusAC} from "./app-reducer";
+import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import {ResultCodes} from "../../enum/enum";
+import {handleServerNetworkError} from "../../utils/error-utils";
 
 type TasksActionType = ReturnType<typeof addTaskAC>
     | ReturnType<typeof removeTaskAC>
@@ -15,8 +16,8 @@ type TasksActionType = ReturnType<typeof addTaskAC>
     | ReturnType<typeof getTodosAC>
     | ReturnType<typeof setTasksAC>
     | ReturnType<typeof updateTaskAC>
-    | ReturnType<typeof setStatusAC>
-    | ReturnType<typeof setErrorAC>
+    | ReturnType<typeof setAppStatusAC>
+    | ReturnType<typeof setAppErrorAC>
 
 const initState: TasksType = {}
 
@@ -100,46 +101,44 @@ export const updateTaskAC = (todoListID: string, taskID: string, task: TaskType)
 }
 
 export const getTasksTC = (todolistId: string) => async (dispatch: Dispatch<TasksActionType>) => {
-    dispatch(setStatusAC("loading"))
+    dispatch(setAppStatusAC("loading"))
     const response = await todoListApi.getTasks(todolistId)
     dispatch(setTasksAC(todolistId, response.data.items))
-    dispatch(setStatusAC("succeeded"))
+    dispatch(setAppStatusAC("succeeded"))
 }
 
 export const createTaskTC = (todolistId: string, title: string) => async (dispatch: Dispatch<TasksActionType>) => {
-    dispatch(setStatusAC("loading"))
+    dispatch(setAppStatusAC("loading"))
     try {
         const response = await todoListApi.createTask(todolistId, title)
         if (response.data.resultCode === ResultCodes.Success) {
             dispatch(addTaskAC(todolistId, response.data.data.item))
-            dispatch(setStatusAC("succeeded"))
+            dispatch(setAppStatusAC("succeeded"))
         } else {
-            dispatch(setErrorAC(response.data.messages.length ? response.data.messages[0] : 'Some Error occurred'))
+            dispatch(setAppErrorAC(response.data.messages.length ? response.data.messages[0] : 'Some Error occurred'))
         }
     } catch (err: any) {
-        dispatch(setErrorAC(err.message))
-        dispatch(setStatusAC("failed"))
+        handleServerNetworkError(dispatch, err.message)
     }
 }
 
 export const deleteTaskTC = (todoListID: string, taskID: string) => async (dispatch: Dispatch<TasksActionType>) => {
-    dispatch(setStatusAC("loading"))
+    dispatch(setAppStatusAC("loading"))
     try {
         const response = await todoListApi.deleteTask(todoListID, taskID)
         if (response.data.resultCode === ResultCodes.Success) {
             dispatch(removeTaskAC(todoListID, taskID))
-            dispatch(setStatusAC("succeeded"))
+            dispatch(setAppStatusAC("succeeded"))
         } else {
-            dispatch(setErrorAC(response.data.messages.length ? response.data.messages[0] : 'Some Error occurred'))
+            dispatch(setAppErrorAC(response.data.messages.length ? response.data.messages[0] : 'Some Error occurred'))
         }
     } catch (err: any) {
-        dispatch(setErrorAC(err.message))
-        dispatch(setStatusAC("failed"))
+        handleServerNetworkError(dispatch, err.message)
     }
 }
 
 export const updateTaskTC = (todoListID: string, task: TaskType, updateModel: UpdateDomainTaskModelType) => async (dispatch: Dispatch<TasksActionType>) => {
-    dispatch(setStatusAC("loading"))
+    dispatch(setAppStatusAC("loading"))
     const apiModel: UpdateTaskModelType = {
         title: task.title,
         startDate: task.startDate,
@@ -153,12 +152,11 @@ export const updateTaskTC = (todoListID: string, task: TaskType, updateModel: Up
         const response = await todoListApi.updateTask(todoListID, task.id, apiModel)
         if (response.data.resultCode === ResultCodes.Success) {
             dispatch(updateTaskAC(todoListID, task.id, response.data.data.item))
-            dispatch(setStatusAC("succeeded"))
+            dispatch(setAppStatusAC("succeeded"))
         } else {
-            dispatch(setErrorAC(response.data.messages.length ? response.data.messages[0] : 'Some Error occurred'))
+            dispatch(setAppErrorAC(response.data.messages.length ? response.data.messages[0] : 'Some Error occurred'))
         }
     } catch (err: any) {
-        dispatch(setErrorAC(err.message))
-        dispatch(setStatusAC("failed"))
+        handleServerNetworkError(dispatch, err.message)
     }
 }

@@ -3,6 +3,7 @@ import {TodolistType} from "../../api/types";
 import {Dispatch} from "redux";
 import {todoListApi} from "../../api/todolist-api";
 import {RequestStatusType, setErrorAC, setStatusAC} from "./app-reducer";
+import {ResultCodes} from "../../enum/enum";
 
 type TodoActionType = ReturnType<typeof addTodoListAC>
     | ReturnType<typeof removeTodoListAC>
@@ -101,7 +102,7 @@ export const createTodoTC = (title: string) => async (dispatch: Dispatch<TodoAct
     dispatch(setStatusAC("loading"))
     try {
         const response = await todoListApi.createTodolist(title)
-        if (response.data.resultCode === 0) {
+        if (response.data.resultCode === ResultCodes.Success) {
             dispatch(addTodoListAC(response.data.data.item))
             dispatch(setStatusAC("succeeded"))
         } else {
@@ -118,7 +119,7 @@ export const deleteTodoTC = (todoListID: string) => async (dispatch: Dispatch<To
     dispatch(setStatusAC("loading"))
     try {
         const result = await todoListApi.deleteTodolist(todoListID)
-        if (result.data.resultCode === 0) {
+        if (result.data.resultCode === ResultCodes.Success) {
             dispatch(removeTodoListAC(todoListID))
             dispatch(setStatusAC("succeeded"))
             dispatch(changeTodolistEntityStatusAC(todoListID, "idle"))

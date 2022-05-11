@@ -4,6 +4,7 @@ import {TaskStatuses, TaskType, UpdateDomainTaskModelType, UpdateTaskModelType} 
 import {Dispatch} from "redux";
 import {todoListApi} from "../../api/todolist-api";
 import {setErrorAC, setStatusAC} from "./app-reducer";
+import {ResultCodes} from "../../enum/enum";
 
 type TasksActionType = ReturnType<typeof addTaskAC>
     | ReturnType<typeof removeTaskAC>
@@ -42,22 +43,6 @@ export const tasksReducer = (state: TasksType = initState, action: TasksActionTy
                 ...state,
                 [action.payload.todoListID]: state[action.payload.todoListID].filter(s => s.id !== action.payload.taskID)
             }
-        // case "TASKS/CHANGE-TASK-TITLE":
-        //     return {
-        //         ...state,
-        //         [action.payload.todoListID]: state[action.payload.todoListID].map(s => s.id === action.payload.taskID ? {
-        //             ...s,
-        //             title: action.payload.title
-        //         } : s)
-        //     }
-        // case "TASKS/CHECKBOX-CHANGER":
-        //     return {
-        //         ...state,
-        //         [action.payload.todoListID]: state[action.payload.todoListID].map(s => s.id === action.payload.taskID ? {
-        //             ...s,
-        //             isDone: action.payload.taskStatus
-        //         } : s)
-        //     }
         case "TASKS/UPDATE-TASK":
             return {
                 ...state, [action.payload.todoListID]: state[action.payload.todoListID]
@@ -125,14 +110,14 @@ export const createTaskTC = (todolistId: string, title: string) => async (dispat
     dispatch(setStatusAC("loading"))
     try {
         const response = await todoListApi.createTask(todolistId, title)
-        if (response.data.resultCode === 0) {
+        if (response.data.resultCode === ResultCodes.Success) {
             dispatch(addTaskAC(todolistId, response.data.data.item))
             dispatch(setStatusAC("succeeded"))
         } else {
             dispatch(setErrorAC(response.data.messages.length ? response.data.messages[0] : 'Some Error occurred'))
-            dispatch(setStatusAC("failed"))
         }
-    } catch {
+    } catch (err: any) {
+        dispatch(setErrorAC(err.message))
         dispatch(setStatusAC("failed"))
     }
 }

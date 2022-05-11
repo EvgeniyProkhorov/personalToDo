@@ -9,6 +9,7 @@ import {useDispatch} from "react-redux";
 import {getTasksTC} from "../../Redux/reducers/tasks-reducer";
 import {TaskStatuses, TaskType} from "../../api/types";
 import {Task} from "../Task/Task";
+import {RequestStatusType} from "../../Redux/reducers/app-reducer";
 
 
 type ToDoPropsType = {
@@ -16,6 +17,7 @@ type ToDoPropsType = {
     tasks: Array<TaskType>
     filter: FilterType
     todoListId: string
+    entityStatus: RequestStatusType
     removeTask: (todoListID: string, taskID: string) => void
     changeFilter: (todoListID: string, value: FilterType) => void
     addTask: (todoListID: string, title: string) => void
@@ -60,7 +62,9 @@ function TodoList(props: ToDoPropsType) {
                     changeTitle={(title) => changeTodoListTitle(title)}/>
                 <IconButton
                     size={"small"}
-                    onClick={removeTodoList}><Delete/></IconButton>
+                    onClick={removeTodoList}
+                    disabled={props.entityStatus === 'loading'}
+                ><Delete/></IconButton>
             </h3>
             <AddItem addItem={addTask}/>
             {props.tasks.map(task => {

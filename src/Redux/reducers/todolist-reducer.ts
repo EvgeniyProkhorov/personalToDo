@@ -136,8 +136,16 @@ export const deleteTodoTC = (todoListID: string) => async (dispatch: Dispatch<To
 
 export const updateTodoTitleTC = (todolistID: string, title: string) => async (dispatch: Dispatch<TodoActionType>) => {
     dispatch(setStatusAC("loading"))
-    await todoListApi.updateTodolist(todolistID, title)
-    dispatch(changeTitleTodoListAC(todolistID, title))
-    dispatch(setStatusAC("succeeded"))
-
+    try {
+        const response = await todoListApi.updateTodolist(todolistID, title)
+        if (response.data.resultCode === ResultCodes.Success) {
+            dispatch(changeTitleTodoListAC(todolistID, title))
+            dispatch(setStatusAC("succeeded"))
+        } else {
+            dispatch(setErrorAC(response.data.messages.length ? response.data.messages[0] : 'Some Error occurred'))
+            dispatch(setStatusAC("failed"))
+        }
+    } catch {
+        dispatch(setStatusAC("failed"))
+    }
 }

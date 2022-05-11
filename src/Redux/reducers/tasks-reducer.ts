@@ -124,12 +124,22 @@ export const createTaskTC = (todolistId: string, title: string) => async (dispat
 
 export const deleteTaskTC = (todoListID: string, taskID: string) => async (dispatch: Dispatch<TasksActionType>) => {
     dispatch(setStatusAC("loading"))
-    await todoListApi.deleteTask(todoListID, taskID)
-    dispatch(removeTaskAC(todoListID, taskID))
-    dispatch(setStatusAC("succeeded"))
+    try {
+        const response = await todoListApi.deleteTask(todoListID, taskID)
+        if (response.data.resultCode === ResultCodes.Success) {
+            dispatch(removeTaskAC(todoListID, taskID))
+            dispatch(setStatusAC("succeeded"))
+        } else {
+            dispatch(setErrorAC(response.data.messages.length ? response.data.messages[0] : 'Some Error occurred'))
+        }
+    } catch (err: any) {
+        dispatch(setErrorAC(err.message))
+        dispatch(setStatusAC("failed"))
+    }
 }
 
 export const updateTaskTC = (todoListID: string, task: TaskType, updateModel: UpdateDomainTaskModelType) => async (dispatch: Dispatch<TasksActionType>) => {
+    dispatch(setStatusAC("loading"))
     const apiModel: UpdateTaskModelType = {
         title: task.title,
         startDate: task.startDate,
@@ -139,8 +149,16 @@ export const updateTaskTC = (todoListID: string, task: TaskType, updateModel: Up
         status: task.status,
         ...updateModel
     }
-    dispatch(setStatusAC("loading"))
-    const response = await todoListApi.updateTask(todoListID, task.id, apiModel)
-    dispatch(updateTaskAC(todoListID, task.id, response.data.data.item))
-    dispatch(setStatusAC("succeeded"))
+    try {
+        const response = await todoListApi.updateTask(todoListID, task.id, apiModel)
+        if (response.data.resultCode === ResultCodes.Success) {
+            dispatch(updateTaskAC(todoListID, task.id, response.data.data.item))
+            dispatch(setStatusAC("succeeded"))
+        } else {
+            dispatch(setErrorAC(response.data.messages.length ? response.data.messages[0] : 'Some Error occurred'))
+        }
+    } catch (err: any) {
+        dispatch(setErrorAC(err.message))
+        dispatch(setStatusAC("failed"))
+    }
 }

@@ -5,7 +5,7 @@ import {Dispatch} from "redux";
 import {todoListApi} from "../../api/todolist-api";
 import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import {ResultCodes} from "../../enum/enum";
-import {handleServerNetworkError} from "../../utils/error-utils";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
 type TasksActionType = ReturnType<typeof addTaskAC>
     | ReturnType<typeof removeTaskAC>
@@ -115,7 +115,7 @@ export const createTaskTC = (todolistId: string, title: string) => async (dispat
             dispatch(addTaskAC(todolistId, response.data.data.item))
             dispatch(setAppStatusAC("succeeded"))
         } else {
-            dispatch(setAppErrorAC(response.data.messages.length ? response.data.messages[0] : 'Some Error occurred'))
+            handleServerAppError(dispatch, response.data)
         }
     } catch (err: any) {
         handleServerNetworkError(dispatch, err.message)
@@ -130,7 +130,7 @@ export const deleteTaskTC = (todoListID: string, taskID: string) => async (dispa
             dispatch(removeTaskAC(todoListID, taskID))
             dispatch(setAppStatusAC("succeeded"))
         } else {
-            dispatch(setAppErrorAC(response.data.messages.length ? response.data.messages[0] : 'Some Error occurred'))
+            handleServerAppError(dispatch, response.data)
         }
     } catch (err: any) {
         handleServerNetworkError(dispatch, err.message)
@@ -154,7 +154,7 @@ export const updateTaskTC = (todoListID: string, task: TaskType, updateModel: Up
             dispatch(updateTaskAC(todoListID, task.id, response.data.data.item))
             dispatch(setAppStatusAC("succeeded"))
         } else {
-            dispatch(setAppErrorAC(response.data.messages.length ? response.data.messages[0] : 'Some Error occurred'))
+            handleServerAppError(dispatch, response.data)
         }
     } catch (err: any) {
         handleServerNetworkError(dispatch, err.message)

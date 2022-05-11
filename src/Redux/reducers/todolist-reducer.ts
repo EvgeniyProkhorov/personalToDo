@@ -4,7 +4,7 @@ import {Dispatch} from "redux";
 import {todoListApi} from "../../api/todolist-api";
 import {RequestStatusType, setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import {ResultCodes} from "../../enum/enum";
-import {handleServerNetworkError} from "../../utils/error-utils";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
 type TodoActionType = ReturnType<typeof addTodoListAC>
     | ReturnType<typeof removeTodoListAC>
@@ -107,8 +107,7 @@ export const createTodoTC = (title: string) => async (dispatch: Dispatch<TodoAct
             dispatch(addTodoListAC(response.data.data.item))
             dispatch(setAppStatusAC("succeeded"))
         } else {
-            dispatch(setAppErrorAC(response.data.messages.length ? response.data.messages[0] : 'Some Error occurred'))
-            dispatch(setAppStatusAC("failed"))
+            handleServerAppError(dispatch, response.data)
         }
     } catch (err: any) {
         handleServerNetworkError(dispatch, err.message)
@@ -119,15 +118,14 @@ export const deleteTodoTC = (todoListID: string) => async (dispatch: Dispatch<To
     dispatch(changeTodolistEntityStatusAC(todoListID, "loading"))
     dispatch(setAppStatusAC("loading"))
     try {
-        const result = await todoListApi.deleteTodolist(todoListID)
-        if (result.data.resultCode === ResultCodes.Success) {
+        const response = await todoListApi.deleteTodolist(todoListID)
+        if (response.data.resultCode === ResultCodes.Success) {
             dispatch(removeTodoListAC(todoListID))
             dispatch(setAppStatusAC("succeeded"))
             dispatch(changeTodolistEntityStatusAC(todoListID, "idle"))
 
         } else {
-            dispatch(setAppErrorAC(result.data.messages.length ? result.data.messages[0] : 'Some Error occurred'))
-            dispatch(setAppStatusAC("failed"))
+            handleServerAppError(dispatch, response.data)
             dispatch(changeTodolistEntityStatusAC(todoListID, "idle"))
         }
     } catch (err: any) {
@@ -144,8 +142,7 @@ export const updateTodoTitleTC = (todolistID: string, title: string) => async (d
             dispatch(changeTitleTodoListAC(todolistID, title))
             dispatch(setAppStatusAC("succeeded"))
         } else {
-            dispatch(setAppErrorAC(response.data.messages.length ? response.data.messages[0] : 'Some Error occurred'))
-            dispatch(setAppStatusAC("failed"))
+            handleServerAppError(dispatch, response.data)
         }
     } catch (err: any) {
         handleServerNetworkError(dispatch, err.message)

@@ -2,9 +2,11 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import Add from "@mui/icons-material/Add";
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import {RequestStatusType} from "../../Redux/reducers/app-reducer";
 
 type InputFormProps = {
     addItem: (title: string) => void
+    entityStatus?: RequestStatusType
 }
 export const AddItem = (props: InputFormProps) => {
     const [value, setValue] = useState('')
@@ -40,10 +42,14 @@ export const AddItem = (props: InputFormProps) => {
                        size={"small"}
                        variant={"outlined"}
                        onChange={onChangeValueHandler}
-                       onKeyPress={onKeyPressAddTask}/>
+                       onKeyPress={onKeyPressAddTask}
+                       disabled={props.entityStatus === 'loading'}
+            />
             <IconButton color={"primary"}
                         size={"small"}
-                        onClick={onClickAddTask}><Add/></IconButton>
+                        onClick={onClickAddTask}
+                        disabled={props.entityStatus === 'loading'}
+            ><Add/></IconButton>
         </div>
     )
 }

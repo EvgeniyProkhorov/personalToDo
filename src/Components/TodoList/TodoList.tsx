@@ -66,7 +66,7 @@ function TodoList(props: ToDoPropsType) {
                     disabled={props.entityStatus === 'loading'}
                 ><Delete/></IconButton>
             </h3>
-            <AddItem addItem={addTask}/>
+            <AddItem addItem={addTask} entityStatus={props.entityStatus}/>
             {props.tasks.map(task => {
                 const onClickRemoveTask = () => props.removeTask(props.todoListId, task.id)
                 const onClickChangeStatus = (e: ChangeEvent<HTMLInputElement>) => {

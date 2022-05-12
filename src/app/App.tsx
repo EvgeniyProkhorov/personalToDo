@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import {TodolistsList} from "../Components/TodolistsList/TodolistsList";
 import {Login} from "../Components/Auth/Login/Login";
 import {NotFound} from "../Components/404/NotFound";
@@ -10,7 +10,8 @@ function App() {
         <Routes>
             <Route path='/' element={<TodolistsList/>}/>
             <Route path='login' element={<Login/>}/>
-            <Route path='*' element={<NotFound/>}/>
+            <Route path='404' element={<NotFound/>}/>
+            <Route path='*' element={<Navigate to='404' replace/>}/>
         </Routes>
     )
 }

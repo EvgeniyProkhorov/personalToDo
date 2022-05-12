@@ -1,8 +1,8 @@
 import React, {ChangeEvent} from "react";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
-import {TaskStatuses, TaskType} from "../../api/types";
-import {EditableSpan} from "../EditableSpan/EditableSpan";
+import {TaskStatuses, TaskType} from "../../../api/types";
+import {EditableSpan} from "../../EditableSpan/EditableSpan";
 
 type TaskProps = {
     task: TaskType

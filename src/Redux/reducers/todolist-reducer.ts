@@ -1,10 +1,10 @@
-import {FilterType} from "../../app/App";
 import {TodolistType} from "../../api/types";
 import {Dispatch} from "redux";
 import {todoListApi} from "../../api/todolist-api";
 import {RequestStatusType, setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import {ResultCodes} from "../../enum/enum";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
+import {FilterType} from "../../Components/types";
 
 type TodoActionType = ReturnType<typeof addTodoListAC>
     | ReturnType<typeof removeTodoListAC>

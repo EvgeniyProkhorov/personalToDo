@@ -39,6 +39,8 @@ export const Login = () => {
             return errors;
 
         },
+        validateOnBlur: false,
+        validateOnChange: false,
         onSubmit: values => {
             alert(JSON.stringify(values))
         },
@@ -64,17 +66,21 @@ export const Login = () => {
                                    margin="normal"
                                    name='email'
                                    onChange={formik.handleChange}
+                                   onBlur={formik.handleBlur}
                                    value={formik.values.email}
                         />
-                        {formik.errors.email && <div style={{color: 'red'}}>{formik.errors.email}</div>}
+                        {formik.touched.email && formik.errors.email &&
+                            <div style={{color: 'red'}}>{formik.errors.email}</div>}
                         <TextField type="password"
                                    label="Password"
                                    margin="normal"
                                    name='password'
                                    onChange={formik.handleChange}
+                                   onBlur={formik.handleBlur}
                                    value={formik.values.password}
                         />
-                        {formik.errors.password && <div style={{color: 'red'}}>{formik.errors.password}</div>}
+                        {formik.touched.password && formik.errors.password &&
+                            <div style={{color: 'red'}}>{formik.errors.password}</div>}
                         <FormControlLabel label='Remember me'
                                           control={<Checkbox name='rememberMe'
                                                              onChange={formik.handleChange}

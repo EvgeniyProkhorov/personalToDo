@@ -1,11 +1,11 @@
-import {addTodoListAC, getTodosAC, removeTodoListAC} from "./todolist-reducer";
-import {TaskStatuses, TaskType, UpdateDomainTaskModelType, UpdateTaskModelType} from "../../api/types";
+import {addTodoListAC, getTodosAC, removeTodoListAC} from "../todolistReducer/todolist-reducer";
+import {TaskStatuses, TaskType, UpdateDomainTaskModelType, UpdateTaskModelType} from "../../../api/types";
 import {Dispatch} from "redux";
-import {todoListApi} from "../../api/todolist-api";
-import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
-import {ResultCodes} from "../../enum/enum";
-import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
-import {TasksType} from "../../Components/types";
+import {todoListApi} from "../../../api/TodolistAPI/todolist-api";
+import {setAppErrorAC, setAppStatusAC} from "../appReducer/app-reducer";
+import {ResultCodes} from "../../../enum/enum";
+import {handleServerAppError, handleServerNetworkError} from "../../../utils/error-utils";
+import {TasksType} from "../../../Components/types";
 
 type TasksActionType = ReturnType<typeof addTaskAC>
     | ReturnType<typeof removeTaskAC>

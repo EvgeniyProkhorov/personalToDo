@@ -1,4 +1,4 @@
-import {setAppErrorAC, setAppStatusAC} from "../Redux/reducers/app-reducer";
+import {setAppErrorAC, setAppStatusAC} from "../Redux/reducers/appReducer/app-reducer";
 import {Dispatch} from "redux";
 import {ResponseType} from "../api/types";
 

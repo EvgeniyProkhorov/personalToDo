@@ -5,10 +5,10 @@ import Delete from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import {useDispatch} from "react-redux";
-import {getTasksTC} from "../../../Redux/reducers/tasks-reducer";
+import {getTasksTC} from "../../../Redux/reducers/taskReucer/tasks-reducer";
 import {TaskStatuses, TaskType} from "../../../api/types";
 import {Task} from "../Task/Task";
-import {RequestStatusType} from "../../../Redux/reducers/app-reducer";
+import {RequestStatusType} from "../../../Redux/reducers/appReducer/app-reducer";
 import {FilterType} from "../../types";
 
 

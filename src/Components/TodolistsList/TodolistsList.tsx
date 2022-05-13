@@ -7,10 +7,10 @@ import {
     getTodosTC,
     TodoGeneralType,
     updateTodoTitleTC
-} from "../../Redux/reducers/todolist-reducer";
-import {RequestStatusType} from "../../Redux/reducers/app-reducer";
+} from "../../Redux/reducers/todolistReducer/todolist-reducer";
+import {RequestStatusType} from "../../Redux/reducers/appReducer/app-reducer";
 import React, {useEffect} from "react";
-import {createTaskTC, deleteTaskTC, updateTaskTC} from "../../Redux/reducers/tasks-reducer";
+import {createTaskTC, deleteTaskTC, updateTaskTC} from "../../Redux/reducers/taskReucer/tasks-reducer";
 import {TaskStatuses, TaskType} from "../../api/types";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -22,7 +22,6 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import {AddItem} from "../InputForm/InputForm";
-import {Login} from "../Auth/Login/Login";
 import Paper from "@mui/material/Paper";
 import TodoList from "./Todolist/TodoList";
 import {ErrorSnackbar} from "../ErrorSnackbar/ErrorSnackbar";

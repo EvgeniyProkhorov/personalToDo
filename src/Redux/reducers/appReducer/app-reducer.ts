@@ -1,4 +1,4 @@
-import {NullableType} from "../../Components/types";
+import {NullableType} from "../../../Components/types";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 

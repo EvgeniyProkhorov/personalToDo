@@ -2,7 +2,7 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import Add from "@mui/icons-material/Add";
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {RequestStatusType} from "../../Redux/reducers/app-reducer";
+import {RequestStatusType} from "../../Redux/reducers/appReducer/app-reducer";
 
 type InputFormProps = {
     addItem: (title: string) => void
@@ -53,8 +53,3 @@ export const AddItem = (props: InputFormProps) => {
         </div>
     )
 }
-
-// <input className={error ? "error" : ""}
-//        value={value}
-//        onChange={onChangeValueHandler}
-//        onKeyPress={onKeyPressAddTask}/>

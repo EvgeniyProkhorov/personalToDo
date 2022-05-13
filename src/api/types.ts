@@ -61,3 +61,10 @@ export type GetTasksResponse = {
     totalCount: number
     items: TaskType[]
 }
+
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe?: boolean
+    captcha?: string
+}

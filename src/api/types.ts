@@ -68,3 +68,9 @@ export type LoginParamsType = {
     rememberMe?: boolean
     captcha?: string
 }
+
+export type AuthType = {
+    id: number
+    email: string
+    login: string
+}

@@ -1,6 +1,6 @@
 import {Dispatch} from "redux";
 import {setAppStatusAC} from "../appReducer/app-reducer";
-import {loginAPI} from "../../../api/LoginAPI/loginApi";
+import {authAPI} from "../../../api/AuthAPI/authApi";
 import {LoginParamsType} from "../../../api/types";
 import {handleServerAppError, handleServerNetworkError} from "../../../utils/error-utils";
 import {ResultCodes} from "../../../enum/enum";
@@ -26,7 +26,7 @@ export const setIsLoggedIn = (value: boolean) => ({type: 'AUTH/SET-IS-LOGGED-IN'
 export const loginTC = (data: LoginParamsType) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC("loading"))
     try {
-        const response = await loginAPI.login(data)
+        const response = await authAPI.login(data)
         if (response.data.resultCode === ResultCodes.Success) {
             dispatch(setIsLoggedIn(true))
             dispatch(setAppStatusAC("succeeded"))

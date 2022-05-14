@@ -3,11 +3,13 @@ import Grid from '@mui/material/Grid';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
+import FormGroup from "@mui/material/FormGroup";
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
+import {useDispatch} from "react-redux";
+import {loginTC} from "../../../Redux/reducers/authReducer/auth-reducer";
 
 type FormikErrorType = {
     email?: string
@@ -16,6 +18,7 @@ type FormikErrorType = {
 }
 
 export const Login = () => {
+    const dispatch = useDispatch()
 
     const formik = useFormik({
         initialValues: {
@@ -43,6 +46,7 @@ export const Login = () => {
         validateOnChange: false,
         onSubmit: values => {
             alert(JSON.stringify(values))
+            dispatch(loginTC(values))
             formik.resetForm()
         },
     })

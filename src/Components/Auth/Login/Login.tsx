@@ -10,6 +10,9 @@ import Button from '@mui/material/Button';
 import {useFormik} from "formik";
 import {useDispatch} from "react-redux";
 import {loginTC} from "../../../Redux/reducers/authReducer/auth-reducer";
+import {ErrorSnackbar} from "../../ErrorSnackbar/ErrorSnackbar";
+import {useAppSelector} from "../../../Redux/store/store";
+import {Navigate} from "react-router-dom";
 
 type FormikErrorType = {
     email?: string
@@ -19,6 +22,7 @@ type FormikErrorType = {
 
 export const Login = () => {
     const dispatch = useDispatch()
+    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
 
     const formik = useFormik({
         initialValues: {
@@ -45,11 +49,14 @@ export const Login = () => {
         validateOnBlur: false,
         validateOnChange: false,
         onSubmit: values => {
-            alert(JSON.stringify(values))
             dispatch(loginTC(values))
             formik.resetForm()
         },
     })
+
+    if (isLoggedIn) {
+        return <Navigate to={'/'}/>
+    }
 
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
@@ -89,6 +96,7 @@ export const Login = () => {
                     </FormGroup>
                 </form>
 
+                <ErrorSnackbar/>
             </FormControl>
         </Grid>
     </Grid>

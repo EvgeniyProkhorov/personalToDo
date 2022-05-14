@@ -26,6 +26,7 @@ import Paper from "@mui/material/Paper";
 import TodoList from "./Todolist/TodoList";
 import {ErrorSnackbar} from "../ErrorSnackbar/ErrorSnackbar";
 import {FilterType, TasksType} from "../types";
+import {Navigate} from "react-router-dom";
 
 
 export const TodolistsList = () => {
@@ -33,8 +34,12 @@ export const TodolistsList = () => {
     const todoLists = useAppSelector<Array<TodoGeneralType>>(state => state.todoLists)
     const tasks = useAppSelector<TasksType>(state => state.tasks)
     const status = useAppSelector<RequestStatusType>(state => state.app.status)
+    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
 
     useEffect(() => {
+        if (!isLoggedIn) {
+            return
+        }
         dispatch(getTodosTC())
     }, [dispatch])
 
@@ -62,6 +67,10 @@ export const TodolistsList = () => {
     }
     const changeFilter = (todoListID: string, filter: FilterType) => {
         dispatch(changeFilterAC(todoListID, filter))
+    }
+
+    if (!isLoggedIn) {
+        return <Navigate to={'login'}/>
     }
 
     return (

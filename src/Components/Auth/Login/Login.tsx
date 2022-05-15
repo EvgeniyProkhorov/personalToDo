@@ -13,12 +13,7 @@ import {loginTC} from "../../../Redux/reducers/authReducer/auth-reducer";
 import {ErrorSnackbar} from "../../ErrorSnackbar/ErrorSnackbar";
 import {useAppSelector} from "../../../Redux/store/store";
 import {Navigate} from "react-router-dom";
-
-type FormikErrorType = {
-    email?: string
-    password?: string
-    rememberMe?: boolean
-}
+import {LoginParamsType} from "../../../api/types";
 
 export const Login = () => {
     const dispatch = useDispatch()
@@ -31,7 +26,7 @@ export const Login = () => {
             rememberMe: false
         },
         validate: values => {
-            const errors: FormikErrorType = {}
+            const errors: Partial<Omit<LoginParamsType, 'captcha'>> = {}
             if (!values.email) {
                 errors.email = 'Email is required!'
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {

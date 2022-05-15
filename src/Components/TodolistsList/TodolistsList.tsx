@@ -33,7 +33,6 @@ export const TodolistsList = () => {
     const dispatch = useDispatch()
     const todoLists = useAppSelector<Array<TodoGeneralType>>(state => state.todoLists)
     const tasks = useAppSelector<TasksType>(state => state.tasks)
-    const status = useAppSelector<RequestStatusType>(state => state.app.status)
     const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
 
     useEffect(() => {

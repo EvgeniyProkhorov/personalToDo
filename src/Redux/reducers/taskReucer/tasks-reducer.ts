@@ -102,9 +102,15 @@ export const updateTaskAC = (todoListID: string, taskID: string, task: TaskType)
 
 export const getTasksTC = (todolistId: string) => async (dispatch: Dispatch<TasksActionType>) => {
     dispatch(setAppStatusAC("loading"))
-    const response = await todoListApi.getTasks(todolistId)
-    dispatch(setTasksAC(todolistId, response.data.items))
-    dispatch(setAppStatusAC("succeeded"))
+    try {
+        const response = await todoListApi.getTasks(todolistId)
+        dispatch(setTasksAC(todolistId, response.data.items))
+        dispatch(setAppStatusAC("succeeded"))
+    } catch (err: any) {
+        handleServerNetworkError(dispatch, err.message)
+    } finally {
+        dispatch(setAppStatusAC("idle"))
+    }
 }
 
 export const createTaskTC = (todolistId: string, title: string) => async (dispatch: Dispatch<TasksActionType>) => {

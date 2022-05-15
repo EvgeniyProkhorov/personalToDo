@@ -74,27 +74,9 @@ export const TodolistsList = () => {
     }
 
     return (
-        <div className="App">
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{mr: 2}}
-                    >
-                        <Menu/>
-                    </IconButton>
-                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                        {'Todo List'}
-                    </Typography>
-                    <Button color="inherit">Login</Button>
-                </Toolbar>
-            </AppBar>
-            {status === 'loading' && <LinearProgress color={'secondary'}/>}
+        <div>
             <Container fixed>
-                <Grid container style={{padding: "20px"}}>
+                <Grid container style={{padding: "20px", margin: '10px'}}>
                     <AddItem addItem={addTodoList}/>
                 </Grid>
                 <Grid container spacing={3}>
@@ -124,7 +106,6 @@ export const TodolistsList = () => {
                                           changeTitleTodoList={changeTitleTodoList}
                                 />
                             </Paper>
-                            <ErrorSnackbar/>
                         </Grid>
                     })}
                 </Grid>

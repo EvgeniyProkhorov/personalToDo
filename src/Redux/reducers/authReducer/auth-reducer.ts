@@ -35,5 +35,24 @@ export const loginTC = (data: LoginParamsType) => async (dispatch: Dispatch) => 
         }
     } catch (err: any) {
         handleServerNetworkError(dispatch, err.message)
+    } finally {
+        dispatch(setAppStatusAC("idle"))
+    }
+}
+
+export const logoutTC = () => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC("loading"))
+    try {
+        const response = await authAPI.logout()
+        if (response.data.resultCode === ResultCodes.Success) {
+            dispatch(setIsLoggedIn(false))
+            dispatch(setAppStatusAC("succeeded"))
+        } else {
+            handleServerAppError(dispatch, response.data)
+        }
+    } catch (err: any) {
+        handleServerNetworkError(dispatch, err.message)
+    } finally {
+        dispatch(setAppStatusAC("idle"))
     }
 }

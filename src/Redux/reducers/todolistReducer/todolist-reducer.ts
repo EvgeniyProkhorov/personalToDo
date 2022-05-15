@@ -93,10 +93,15 @@ export const changeTodolistEntityStatusAC = (todoListID: string, entityStatus: R
 
 export const getTodosTC = () => async (dispatch: Dispatch<TodoActionType>) => {
     dispatch(setAppStatusAC("loading"))
-    const response = await todoListApi.getTodos()
-    dispatch(getTodosAC(response.data))
-    dispatch(setAppStatusAC("succeeded"))
-
+    try {
+        const response = await todoListApi.getTodos()
+        dispatch(getTodosAC(response.data))
+        dispatch(setAppStatusAC("succeeded"))
+    } catch (err: any) {
+        handleServerNetworkError(dispatch, err.message)
+    } finally {
+        dispatch(setAppStatusAC("idle"))
+    }
 }
 
 export const createTodoTC = (title: string) => async (dispatch: Dispatch<TodoActionType>) => {
@@ -111,6 +116,8 @@ export const createTodoTC = (title: string) => async (dispatch: Dispatch<TodoAct
         }
     } catch (err: any) {
         handleServerNetworkError(dispatch, err.message)
+    } finally {
+        dispatch(setAppStatusAC("idle"))
     }
 }
 
@@ -131,6 +138,8 @@ export const deleteTodoTC = (todoListID: string) => async (dispatch: Dispatch<To
     } catch (err: any) {
         handleServerNetworkError(dispatch, err.message)
         dispatch(changeTodolistEntityStatusAC(todoListID, "idle"))
+    } finally {
+        dispatch(setAppStatusAC("idle"))
     }
 }
 
@@ -146,5 +155,7 @@ export const updateTodoTitleTC = (todolistID: string, title: string) => async (d
         }
     } catch (err: any) {
         handleServerNetworkError(dispatch, err.message)
+    } finally {
+        dispatch(setAppStatusAC("idle"))
     }
 }

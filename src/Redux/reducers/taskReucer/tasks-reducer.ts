@@ -119,6 +119,8 @@ export const createTaskTC = (todolistId: string, title: string) => async (dispat
         }
     } catch (err: any) {
         handleServerNetworkError(dispatch, err.message)
+    } finally {
+        dispatch(setAppStatusAC("idle"))
     }
 }
 
@@ -134,6 +136,8 @@ export const deleteTaskTC = (todoListID: string, taskID: string) => async (dispa
         }
     } catch (err: any) {
         handleServerNetworkError(dispatch, err.message)
+    } finally {
+        dispatch(setAppStatusAC("idle"))
     }
 }
 
@@ -158,5 +162,7 @@ export const updateTaskTC = (todoListID: string, task: TaskType, updateModel: Up
         }
     } catch (err: any) {
         handleServerNetworkError(dispatch, err.message)
+    } finally {
+        dispatch(setAppStatusAC("idle"))
     }
 }
